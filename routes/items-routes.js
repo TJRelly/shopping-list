@@ -1,7 +1,7 @@
 const express = require("express");
-const items = require("./fakeDb");
+const items = require("../fakeDb");
 const router = new express.Router();
-const ExpressError = require("./expressError");
+const ExpressError = require("../expressError");
 
 /** GET /items: get list of items */
 
