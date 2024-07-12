@@ -1,6 +1,6 @@
 const express = require("express");
 const ExpressError = require("./expressError");
-const routes = require("./routes")
+const routes = require("./items-routes");
 
 const app = express();
 
@@ -28,6 +28,4 @@ app.use(function (err, req, res, next) {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-});
+module.exports = app;

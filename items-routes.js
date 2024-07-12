@@ -1,6 +1,7 @@
 const express = require("express");
 const items = require("./fakeDb");
 const router = new express.Router();
+const ExpressError = require("./expressError");
 
 /** GET /items: get list of items */
 
@@ -39,8 +40,8 @@ router.get("/:name", function (req, res, next) {
     //Shows information on a single item
     try {
         const item = items.find((i) => i.name === req.params.name);
-        if (item === undefined) throw new ExpressError("Item not found", 404);
-        res.json(item);
+        if (!item) throw new ExpressError("Item not found", 404);
+        res.status(200).json(item);
     } catch (e) {
         next(e);
     }
@@ -50,7 +51,8 @@ router.patch("/:name", function (req, res, next) {
     //updates information in a single item
     try {
         const item = items.find((i) => i.name === req.params.name);
-        if (item === undefined) throw new ExpressError("Item not found", 404);
+        if (!item || !items.length)
+            throw new ExpressError("Item not found", 404);
         item.name = req.body.name;
         item.price = req.body.price;
         res.json({ updated: item });
@@ -66,7 +68,7 @@ router.delete("/:name", function (req, res, next) {
         if (item === -1) throw new ExpressError("Item not found", 404);
         prevItem = items[item];
         items.splice(item, 1);
-        res.json({ deleted: prevItem});
+        res.json({ deleted: prevItem });
     } catch (e) {
         next(e);
     }
